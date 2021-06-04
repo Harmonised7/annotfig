@@ -1,16 +1,22 @@
 package harmonised.annotfig.network;
 
-import harmonised.annotfig.config.ConfigProcessor;
-import harmonised.annotfig.util.Util;
+import harmonised.annotfig.config.ConfigEntry;
+import harmonised.annotfig.config.Configs;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTUtil;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import java.lang.reflect.Field;
+import java.util.Map;
 import java.util.function.Supplier;
 
 public class MessageConfig
 {
+    public static final Logger LOGGER = LogManager.getLogger();
+
+    public String configKey;
     public CompoundNBT config;
 
     public MessageConfig( CompoundNBT config )
@@ -36,11 +42,20 @@ public class MessageConfig
         buf.writeNbt( packet.config );
     }
 
-    public static void handlePacket(MessageConfig packet, Supplier<NetworkEvent.Context> ctx )
+    public static void handlePacket( MessageConfig packet, Supplier<NetworkEvent.Context> ctx )
     {
         ctx.get().enqueueWork(() ->
         {
-            //Set
+            ConfigEntry config = Configs.getConfig( packet.configKey );
+            if( config == null )
+                LOGGER.error( "Invalid config key " + packet.configKey );
+            else
+            {
+                for( String key : packet.config.getAllKeys() )
+                {
+                    config.setField( key, packet.config.getDouble( key ) );
+                }
+            }
         });
         ctx.get().setPacketHandled( true );
     }

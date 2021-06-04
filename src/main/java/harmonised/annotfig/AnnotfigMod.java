@@ -1,8 +1,9 @@
 package harmonised.annotfig;
 
 import harmonised.annotfig.client.ClientHandler;
-import harmonised.annotfig.config.ConfigProcessor;
-import harmonised.annotfig.config.SaoConfig;
+import harmonised.annotfig.config.ConfigEntry;
+import harmonised.annotfig.config.Configs;
+import harmonised.annotfig.config.acConfig;
 import harmonised.annotfig.events.EventHandler;
 import harmonised.annotfig.network.NetworkHandler;
 import harmonised.annotfig.util.Reference;
@@ -20,6 +21,8 @@ import org.apache.logging.log4j.Logger;
 @Mod( Reference.MOD_ID )
 public class AnnotfigMod
 {
+    private static boolean isLocal = false;
+
     private static final String PROTOCOL_VERSION = "1";
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -35,8 +38,7 @@ public class AnnotfigMod
     {
         FMLJavaModLoadingContext.get().getModEventBus().addListener( this::modsLoading );
         FMLJavaModLoadingContext.get().getModEventBus().addListener( this::clientLoading );
-        ConfigProcessor.storeDefaultValues( SaoConfig.class );
-//        SaoParticleTypes.init();
+        Configs.register( Reference.MOD_ID, acConfig.class );
     }
 
     private void modsLoading( FMLCommonSetupEvent event )
@@ -47,6 +49,16 @@ public class AnnotfigMod
 
     private void clientLoading( FMLClientSetupEvent event )
     {
-        ClientHandler.init();
+        isLocal = true;
+    }
+
+    public static boolean isLocal()
+    {
+        return isLocal;
+    }
+
+    public static boolean isServerLocal()
+    {
+        return ClientHandler.isServerLocal();
     }
 }

@@ -1,5 +1,7 @@
 package harmonised.annotfig.util;
 
+import harmonised.annotfig.config.acConfig;
+
 public class Reference
 {
     public static final String MOD_ID = "annotfig";

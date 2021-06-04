@@ -1,6 +1,6 @@
 package harmonised.annotfig.config;
 
-public class SaoConfig
+public class acConfig
 {
     @Config.Name( "Button Color" )
     @Config.Category( "Gui Colors" )

@@ -20,9 +20,4 @@ public class NetworkHandler
     {
         AnnotfigMod.HANDLER.sendTo( packet, player.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT );
     }
-
-    public static void sendToServer( MessageConfig packet )
-    {
-        AnnotfigMod.HANDLER.sendToServer( packet );
-    }
 }
