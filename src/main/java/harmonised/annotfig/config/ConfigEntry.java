@@ -64,7 +64,6 @@ public class ConfigEntry
             }
         }
         return stringBuilder.toString();
-
     }
 
     public Map<String, Field> getFields()
@@ -105,7 +104,7 @@ public class ConfigEntry
         }
         catch( IOException e )
         {
-            LOGGER.error( "Could save " + Reference.MOD_ID + " Config!", configFile.getPath(), e );
+            LOGGER.error( "Could not save " + Reference.MOD_ID + " Config!", configFile.getPath(), e );
         }
 
         try( FileOutputStream outputStream = new FileOutputStream( configFile ) )
